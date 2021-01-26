@@ -1,4 +1,4 @@
-package com.viesca.csvprocessor.service;
+package com.viesca.csvprocessor.service.mapper;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;

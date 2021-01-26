@@ -1,8 +1,9 @@
-package com.viesca.csvprocessor.service
+package com.viesca.csvprocessor.service.mapper
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.viesca.csvprocessor.dto.CsvRecord
-import org.apache.commons.collections4.CollectionUtils
+import com.viesca.csvprocessor.service.filereader.CsvReader
+import com.viesca.csvprocessor.service.mapper.CsvRecordMapper
 import spock.lang.Shared
 import spock.lang.Specification
 

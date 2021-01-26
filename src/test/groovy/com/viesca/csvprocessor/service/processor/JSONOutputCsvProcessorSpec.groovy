@@ -1,5 +1,9 @@
-package com.viesca.csvprocessor.service
+package com.viesca.csvprocessor.service.processor
 
+import com.viesca.csvprocessor.service.filereader.CsvReader
+import com.viesca.csvprocessor.service.filereader.JSONReader
+import com.viesca.csvprocessor.service.mapper.CsvRecordMapper
+import com.viesca.csvprocessor.service.processor.JSONOutputCsvProcessor
 import org.apache.commons.io.FileUtils
 import spock.lang.Shared
 import spock.lang.Specification

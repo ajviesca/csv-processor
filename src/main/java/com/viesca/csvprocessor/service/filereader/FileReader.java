@@ -1,4 +1,4 @@
-package com.viesca.csvprocessor.service;
+package com.viesca.csvprocessor.service.filereader;
 
 import java.io.IOException;
 import java.nio.file.Files;

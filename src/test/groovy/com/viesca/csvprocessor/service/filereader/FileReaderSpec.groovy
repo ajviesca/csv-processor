@@ -1,6 +1,7 @@
-package com.viesca.csvprocessor.service
+package com.viesca.csvprocessor.service.filereader
 
-import spock.lang.Shared
+import com.viesca.csvprocessor.service.filereader.CsvReader
+import com.viesca.csvprocessor.service.filereader.JSONReader
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -16,7 +17,7 @@ class FileReaderSpec extends Specification {
         files.size() == resultSize
         where:
         reader            | fileType || resultSize
-        new CsvReader()   | 'csv'    || 2
-        new JSONReader() || 'json'   || 1
+        new CsvReader() | 'csv' || 2
+        new JSONReader() || 'json' || 1
     }
 }

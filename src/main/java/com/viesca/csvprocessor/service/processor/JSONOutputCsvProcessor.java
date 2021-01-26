@@ -1,8 +1,10 @@
-package com.viesca.csvprocessor.service;
+package com.viesca.csvprocessor.service.processor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viesca.csvprocessor.dto.CsvRecord;
+import com.viesca.csvprocessor.service.filereader.CsvReader;
+import com.viesca.csvprocessor.service.mapper.CsvRecordMapper;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.IOException;
@@ -18,6 +20,11 @@ public class JSONOutputCsvProcessor {
 
     private final CsvReader csvReader;
     private final CsvRecordMapper csvRecordMapper;
+
+    public JSONOutputCsvProcessor() {
+        this.csvReader = new CsvReader();
+        this.csvRecordMapper = new CsvRecordMapper();
+    }
 
     public JSONOutputCsvProcessor(CsvReader csvReader, CsvRecordMapper csvRecordMapper) {
         this.csvReader = csvReader;
@@ -55,15 +62,17 @@ public class JSONOutputCsvProcessor {
         }
 
         private void writeToFile() {
-            IntStream.range(0,jsonStrings.size())
-                    .forEach(index -> {
-                        try {
-                            Files.write(Paths.get(target, String.format("%d.json", index)),
-                                    jsonStrings.get(index).getBytes());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
+            if (CollectionUtils.isNotEmpty(jsonStrings)) {
+                IntStream.range(0, jsonStrings.size())
+                        .forEach(index -> {
+                            try {
+                                Files.write(Paths.get(target, String.format("%d.json", index)),
+                                        jsonStrings.get(index).getBytes());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+            }
         }
 
         private void generateJSONStrings() {
