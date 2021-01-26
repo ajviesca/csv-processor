@@ -1,30 +1,18 @@
 package com.viesca.csvprocessor.service.mapper;
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.viesca.csvprocessor.dto.CsvRecord;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CsvRecordMapper {
-
-    private final ObjectReader objectReader;
-
-    public CsvRecordMapper() {
-        objectReader = new CsvMapper()
-                .readerFor(CsvRecord.class)
-                .with(CsvSchema
-                        .emptySchema()
-                        .withHeader()
-                );
-    }
 
     public List<CsvRecord> generateCsvRecords(List<Path> csvFiles) {
         return CollectionUtils.emptyIfNull(csvFiles)
@@ -36,10 +24,13 @@ public class CsvRecordMapper {
     }
 
     private List<CsvRecord> processCsvFile(Path csvFile) {
-
         try {
-            MappingIterator<CsvRecord> objectMappingIterator = objectReader.readValues(csvFile.toFile());
-            return objectMappingIterator.readAll();
+            List<List<String>> rows = Files.readAllLines(csvFile).stream()
+                    .map(line -> Arrays.asList(line.split(",")))
+                    .collect(Collectors.toList());
+            return IntStream.range(1, rows.size())
+                    .mapToObj(index -> new CsvRecord(csvFile.getFileName().toString(), index, rows.get(0), rows.get(index)))
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }

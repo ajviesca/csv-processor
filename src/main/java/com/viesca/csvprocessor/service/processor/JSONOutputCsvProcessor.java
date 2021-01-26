@@ -1,12 +1,13 @@
 package com.viesca.csvprocessor.service.processor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.viesca.csvprocessor.service.filereader.CsvReader;
 import com.viesca.csvprocessor.service.mapper.CsvRecordMapper;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.io.IOException;
+import java.io.StringWriter;
 
 public class JSONOutputCsvProcessor extends CsvProcessor {
 
@@ -24,20 +25,29 @@ public class JSONOutputCsvProcessor extends CsvProcessor {
             super(src, target);
         }
 
-        protected void generateStringData() {
-            setDataStrings(CollectionUtils.emptyIfNull(getCsvRecords())
+        protected void formatOutput() {
+            CollectionUtils.emptyIfNull(getCsvRecords())
                     .parallelStream()
-                    .map(csvRecord -> {
-                        try {
-                            return getObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(csvRecord);
-                        } catch (JsonProcessingException e) {
+                    .forEach(csvRecord -> {
+                        JsonFactory jsonFactory = new JsonFactory();
+                        StringWriter writer = new StringWriter();
+
+                        try (JsonGenerator generator = jsonFactory.createGenerator(writer)) {
+                            generator.useDefaultPrettyPrinter();
+                            generator.writeStartObject();
+
+                            for (int i = 0; i < csvRecord.getHeaders().size(); i++) {
+                                generator.writeFieldName(csvRecord.getHeaders().get(i).trim());
+                                generator.writeString(csvRecord.getValues().get(i).trim());
+                            }
+
+                            generator.writeEndObject();
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
 
-                        return null;
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList()));
+                        csvRecord.setFormattedOutput(writer.toString());
+                    });
         }
 
         @Override
