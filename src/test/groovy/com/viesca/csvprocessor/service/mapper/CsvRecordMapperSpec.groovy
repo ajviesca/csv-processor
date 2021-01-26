@@ -7,6 +7,8 @@ import com.viesca.csvprocessor.service.mapper.CsvRecordMapper
 import spock.lang.Shared
 import spock.lang.Specification
 
+import javax.xml.bind.JAXBContext
+import javax.xml.bind.Unmarshaller
 import java.nio.file.Paths
 
 class CsvRecordMapperSpec extends Specification {
@@ -30,11 +32,18 @@ class CsvRecordMapperSpec extends Specification {
         then: 'csv records are created'
         for (def csvRecord : csvRecords) {
             assert getExpectedJsonData().equals(csvRecord)
+            assert getExpectedXmlData().equals(csvRecord)
         }
     }
 
     private getExpectedJsonData() {
-        new ObjectMapper().readValue(Paths.get('src/test/resources/expected.json').toFile(), CsvRecord.class);
+        new ObjectMapper().readValue(Paths.get('src/test/resources/expectedJson.json').toFile(), CsvRecord.class);
+    }
+
+    private getExpectedXmlData() {
+        JAXBContext jaxbContext = JAXBContext.newInstance(CsvRecord.class)
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller()
+        unmarshaller.unmarshal(Paths.get('src/test/resources/expectedXml.xml').toFile())
     }
 
 }

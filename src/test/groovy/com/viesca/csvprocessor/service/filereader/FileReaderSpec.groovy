@@ -17,7 +17,7 @@ class FileReaderSpec extends Specification {
         files.size() == resultSize
         where:
         reader            | fileType || resultSize
-        new CsvReader() | 'csv' || 2
-        new JSONReader() || 'json' || 1
+        new CsvReader()   | 'csv'    || 2
+        new JSONReader() || 'json'   || 1
     }
 }

@@ -5,6 +5,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class CsvRecord {
 
     @JsonProperty("first_name")
@@ -46,6 +50,7 @@ public class CsvRecord {
     public CsvRecord() {
     }
 
+    @XmlElement
     public String getFirstName() {
         return firstName;
     }
@@ -54,6 +59,7 @@ public class CsvRecord {
         this.firstName = firstName;
     }
 
+    @XmlElement
     public String getLastName() {
         return lastName;
     }
@@ -62,6 +68,7 @@ public class CsvRecord {
         this.lastName = lastName;
     }
 
+    @XmlElement
     public String getCompanyName() {
         return companyName;
     }
@@ -70,6 +77,7 @@ public class CsvRecord {
         this.companyName = companyName;
     }
 
+    @XmlElement
     public String getAddress() {
         return address;
     }
@@ -78,6 +86,7 @@ public class CsvRecord {
         this.address = address;
     }
 
+    @XmlElement
     public String getCity() {
         return city;
     }
@@ -86,6 +95,7 @@ public class CsvRecord {
         this.city = city;
     }
 
+    @XmlElement
     public String getCounty() {
         return county;
     }
@@ -94,6 +104,7 @@ public class CsvRecord {
         this.county = county;
     }
 
+    @XmlElement
     public String getState() {
         return state;
     }
@@ -102,6 +113,7 @@ public class CsvRecord {
         this.state = state;
     }
 
+    @XmlElement
     public String getZip() {
         return zip;
     }
@@ -110,6 +122,7 @@ public class CsvRecord {
         this.zip = zip;
     }
 
+    @XmlElement
     public String getPhone1() {
         return phone1;
     }
@@ -118,6 +131,7 @@ public class CsvRecord {
         this.phone1 = phone1;
     }
 
+    @XmlElement
     public String getPhone2() {
         return phone2;
     }
@@ -126,6 +140,7 @@ public class CsvRecord {
         this.phone2 = phone2;
     }
 
+    @XmlElement
     public String getEmail() {
         return email;
     }
@@ -134,6 +149,7 @@ public class CsvRecord {
         this.email = email;
     }
 
+    @XmlElement
     public String getWeb() {
         return web;
     }
