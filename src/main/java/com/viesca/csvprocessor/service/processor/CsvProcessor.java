@@ -85,10 +85,6 @@ public abstract class CsvProcessor {
             return csvRecords;
         }
 
-        public void setCsvRecords(List<CsvRecord> csvRecords) {
-            this.csvRecords = csvRecords;
-        }
-
         public List<String> getDataStrings() {
             return dataStrings;
         }
