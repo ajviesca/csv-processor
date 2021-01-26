@@ -1,8 +1,12 @@
 package com.viesca.csvprocessor.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.viesca.csvprocessor.dto.CsvRecord
 import org.apache.commons.collections4.CollectionUtils
 import spock.lang.Shared
 import spock.lang.Specification
+
+import java.nio.file.Paths
 
 class CsvRecordMapperSpec extends Specification {
 
@@ -23,8 +27,13 @@ class CsvRecordMapperSpec extends Specification {
         when: "process is invoked"
         def csvRecords = sut.generateCsvRecords(csvFiles);
         then: 'csv records are created'
-        CollectionUtils.isNotEmpty(csvRecords)
-        System.out.println(csvRecords)
-        csvRecords.size() == 5
+        for (def csvRecord : csvRecords) {
+            assert getExpectedJsonData().equals(csvRecord)
+        }
     }
+
+    private getExpectedJsonData() {
+        new ObjectMapper().readValue(Paths.get('src/test/resources/expected.json').toFile(), CsvRecord.class);
+    }
+
 }
