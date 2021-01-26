@@ -9,7 +9,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group 'com.viesca'
-version '2.0'
+version '3.0'
 
 repositories {
     mavenCentral()
