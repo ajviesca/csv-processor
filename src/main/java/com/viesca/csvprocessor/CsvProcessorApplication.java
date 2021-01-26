@@ -12,8 +12,6 @@ public class CsvProcessorApplication {
     private static final CsvRecordMapper CSV_RECORD_MAPPER = new CsvRecordMapper();
 
     public static void main(String... args) {
-        System.out.println("csv processor greets you.");
-
         String mode = null;
         String srcDir = null;
         String targetDir = null;
