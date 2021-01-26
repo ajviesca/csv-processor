@@ -1,10 +1,11 @@
 package com.viesca.csvprocessor.service
 
-
+import spock.lang.Shared
 import spock.lang.Specification
 
 class CsvReaderSpec extends Specification {
 
+    @Shared
     def sut;
 
     def setupSpec() {
