@@ -29,7 +29,7 @@ public class CsvRecord {
     private String state;
 
     @JsonProperty("zip")
-    private int zip;
+    private String zip;
 
     @JsonProperty("phone1")
     private String phone1;
@@ -102,11 +102,11 @@ public class CsvRecord {
         this.state = state;
     }
 
-    public int getZip() {
+    public String getZip() {
         return zip;
     }
 
-    public void setZip(int zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
 

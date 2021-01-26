@@ -31,7 +31,7 @@ public class CsvRecordMapper {
                 .stream()
                 .map(this::processCsvFile)
                 .filter(CollectionUtils::isNotEmpty)
-                .flatMap(csvRecords -> csvRecords.stream())
+                .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
 
