@@ -1,6 +1,8 @@
 package com.viesca.csvprocessor.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class CsvRecord {
@@ -27,7 +29,7 @@ public class CsvRecord {
     private String state;
 
     @JsonProperty("zip")
-    private String zip;
+    private int zip;
 
     @JsonProperty("phone1")
     private String phone1;
@@ -100,11 +102,11 @@ public class CsvRecord {
         this.state = state;
     }
 
-    public String getZip() {
+    public int getZip() {
         return zip;
     }
 
-    public void setZip(String zip) {
+    public void setZip(int zip) {
         this.zip = zip;
     }
 
@@ -156,5 +158,48 @@ public class CsvRecord {
                 .append("email", email)
                 .append("web", web)
                 .toString();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CsvRecord csvRecord = (CsvRecord) o;
+
+        return new EqualsBuilder()
+                .append(zip, csvRecord.zip)
+                .append(firstName, csvRecord.firstName)
+                .append(lastName, csvRecord.lastName)
+                .append(companyName, csvRecord.companyName)
+                .append(address, csvRecord.address)
+                .append(city, csvRecord.city)
+                .append(county, csvRecord.county)
+                .append(state, csvRecord.state)
+                .append(phone1, csvRecord.phone1)
+                .append(phone2, csvRecord.phone2)
+                .append(email, csvRecord.email)
+                .append(web, csvRecord.web)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(firstName)
+                .append(lastName)
+                .append(companyName)
+                .append(address)
+                .append(city)
+                .append(county)
+                .append(state)
+                .append(zip)
+                .append(phone1)
+                .append(phone2)
+                .append(email)
+                .append(web)
+                .toHashCode();
     }
 }
