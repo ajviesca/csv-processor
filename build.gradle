@@ -1,0 +1,21 @@
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'groovy'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group 'com.viesca'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'org.spockframework', name: 'spock-core', version: '1.3-groovy-2.5'
+
+}
