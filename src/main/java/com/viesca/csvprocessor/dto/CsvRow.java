@@ -14,17 +14,18 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @XmlRootElement
-public class CsvRecord {
+public class CsvRow {
 
     private String sourceFile;
     private int index;
-    private List<RecordField> recordFields;
+    private List<CsvField> csvFields;
     private String formattedOutput;
 
-    public CsvRecord() {
+    public CsvRow() {
+        // needed by xml mapper
     }
 
-    public CsvRecord(String sourceFile, int index, List<String> headers, List<String> values) {
+    public CsvRow(String sourceFile, int index, List<String> headers, List<String> values) {
         this.sourceFile = sourceFile;
         this.index = index;
 
@@ -32,8 +33,8 @@ public class CsvRecord {
             throw new IllegalArgumentException("mismatch header and values length");
         }
 
-        recordFields = IntStream.range(0, headers.size())
-                .mapToObj(i -> new RecordField(headers.get(i), values.get(i)))
+        csvFields = IntStream.range(0, headers.size())
+                .mapToObj(i -> new CsvField(headers.get(i), values.get(i)))
                 .collect(Collectors.toList());
     }
 
@@ -57,12 +58,12 @@ public class CsvRecord {
 
     @XmlElementWrapper(name = "fields")
     @XmlElement(name = "field")
-    public List<RecordField> getRecordFields() {
-        return recordFields;
+    public List<CsvField> getRecordFields() {
+        return csvFields;
     }
 
-    public void setRecordFields(List<RecordField> recordFields) {
-        this.recordFields = recordFields;
+    public void setRecordFields(List<CsvField> csvFields) {
+        this.csvFields = csvFields;
     }
 
     @XmlTransient
@@ -76,10 +77,10 @@ public class CsvRecord {
 
     @XmlTransient
     public Map<String, String> getFieldValuesAsMap() {
-        return recordFields
+        return csvFields
                 .stream()
-                .collect(Collectors.toMap(RecordField::getFieldName,
-                        RecordField::getValue,
+                .collect(Collectors.toMap(CsvField::getFieldName,
+                        CsvField::getValue,
                         (k, v) -> {
                             throw new IllegalArgumentException(String.format("Duplicate key %s", k));
                         },
@@ -91,7 +92,7 @@ public class CsvRecord {
         return new ToStringBuilder(this)
                 .append("sourceFile", sourceFile)
                 .append("index", index)
-                .append("recordFields", recordFields)
+                .append("recordFields", csvFields)
                 .append("formattedOutput", formattedOutput)
                 .toString();
     }

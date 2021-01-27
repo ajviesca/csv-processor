@@ -1,6 +1,6 @@
 package com.viesca.csvprocessor.service.processor;
 
-import com.viesca.csvprocessor.dto.CsvRecord;
+import com.viesca.csvprocessor.dto.CsvRow;
 import com.viesca.csvprocessor.service.filereader.CsvReader;
 import com.viesca.csvprocessor.service.mapper.CsvRecordMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -31,14 +31,14 @@ public class XMLOutputCsvProcessor extends CsvProcessor {
         protected void formatOutput() {
             CollectionUtils.emptyIfNull(getCsvRecords())
                     .parallelStream()
-                    .forEach(csvRecord -> {
+                    .forEach(csvRow -> {
                         try {
-                            JAXBContext jaxbContext = JAXBContext.newInstance(CsvRecord.class);
+                            JAXBContext jaxbContext = JAXBContext.newInstance(CsvRow.class);
                             Marshaller marshaller = jaxbContext.createMarshaller();
                             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
                             StringWriter writer = new StringWriter();
-                            marshaller.marshal(csvRecord, writer);
-                            csvRecord.setFormattedOutput(writer.toString());
+                            marshaller.marshal(csvRow, writer);
+                            csvRow.setFormattedOutput(writer.toString());
                         } catch (JAXBException e) {
                             e.printStackTrace();
                         }

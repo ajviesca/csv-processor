@@ -1,6 +1,6 @@
 package com.viesca.csvprocessor.service.processor;
 
-import com.viesca.csvprocessor.dto.CsvRecord;
+import com.viesca.csvprocessor.dto.CsvRow;
 import com.viesca.csvprocessor.service.filereader.CsvReader;
 import com.viesca.csvprocessor.service.mapper.CsvRecordMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -28,7 +28,7 @@ public abstract class CsvProcessor {
         private final String targetDir;
 
         private List<Path> sourceFiles;
-        private List<CsvRecord> csvRecords;
+        private List<CsvRow> csvRows;
 
         protected Processor(String srcDir, String targetDir) {
             this.srcDir = srcDir;
@@ -50,16 +50,16 @@ public abstract class CsvProcessor {
         protected void writeToFile() {
             CollectionUtils.emptyIfNull(getCsvRecords())
                     .parallelStream()
-                    .forEach(csvRecord -> {
+                    .forEach(csvRow -> {
                         try {
                             Files.write(Paths.get(getTargetDir(),
                                     String.format(
                                             "%s-%d.%s",
-                                            csvRecord.getSourceFile(),
-                                            csvRecord.getIndex(),
+                                            csvRow.getSourceFile(),
+                                            csvRow.getIndex(),
                                             getFileType()
                                     )),
-                                    csvRecord.getFormattedOutput().getBytes());
+                                    csvRow.getFormattedOutput().getBytes());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -67,7 +67,7 @@ public abstract class CsvProcessor {
         }
 
         private void mapToCsvRecord() {
-            csvRecords = csvRecordMapper.generateCsvRecords(sourceFiles);
+            csvRows = csvRecordMapper.generateCsvRecords(sourceFiles);
         }
 
         private void readFiles() {
@@ -82,8 +82,8 @@ public abstract class CsvProcessor {
             }
         }
 
-        public List<CsvRecord> getCsvRecords() {
-            return csvRecords;
+        public List<CsvRow> getCsvRecords() {
+            return csvRows;
         }
 
         public String getTargetDir() {
