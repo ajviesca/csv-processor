@@ -4,6 +4,7 @@ import com.viesca.csvprocessor.service.filereader.CsvReader
 import com.viesca.csvprocessor.service.filereader.JSONReader
 import com.viesca.csvprocessor.service.filereader.XMLReader
 import com.viesca.csvprocessor.service.mapper.CsvRecordMapper
+import com.viesca.csvprocessor.util.JSONWriter
 import org.apache.commons.io.FileUtils
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -38,9 +39,9 @@ class CsvProcessorSpec extends Specification {
         then: "should generate json files"
         reader.getFiles(OUTPUT_DIR).size() == expectedResult
         where:
-        fileType | sut                                                                | reader           || expectedResult
-        'json'   | new JSONOutputCsvProcessor(new CsvReader(), new CsvRecordMapper()) | new JSONReader() || 4
-        'xml'    | new XMLOutputCsvProcessor(new CsvReader(), new CsvRecordMapper())  | new XMLReader()  || 4
+        fileType | sut                                                                                  | reader           || expectedResult
+        'json'   | new JSONOutputCsvProcessor(new CsvReader(), new CsvRecordMapper(), new JSONWriter()) | new JSONReader() || 4
+        'xml'    | new XMLOutputCsvProcessor(new CsvReader(), new CsvRecordMapper())                    | new XMLReader()  || 4
     }
 
 }

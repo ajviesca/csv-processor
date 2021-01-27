@@ -6,7 +6,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -66,6 +68,17 @@ public class CsvRecord {
 
     public void setFormattedOutput(String formattedOutput) {
         this.formattedOutput = formattedOutput;
+    }
+
+    public Map<String, String> getFieldValuesAsMap() {
+        return recordFields
+                .stream()
+                .collect(Collectors.toMap(RecordField::getFieldName,
+                        RecordField::getValue,
+                        (k, v) -> {
+                            throw new RuntimeException(String.format("Duplicate key %s", k));
+                        },
+                        LinkedHashMap::new));
     }
 
     @Override

@@ -1,18 +1,17 @@
 package com.viesca.csvprocessor.service.processor;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.viesca.csvprocessor.service.filereader.CsvReader;
 import com.viesca.csvprocessor.service.mapper.CsvRecordMapper;
+import com.viesca.csvprocessor.util.JSONWriter;
 import org.apache.commons.collections4.CollectionUtils;
-
-import java.io.IOException;
-import java.io.StringWriter;
 
 public class JSONOutputCsvProcessor extends CsvProcessor {
 
-    public JSONOutputCsvProcessor(CsvReader csvReader, CsvRecordMapper csvRecordMapper) {
+    private final JSONWriter jsonWriter;
+
+    public JSONOutputCsvProcessor(CsvReader csvReader, CsvRecordMapper csvRecordMapper, JSONWriter jsonWriter) {
         super(csvReader, csvRecordMapper);
+        this.jsonWriter = jsonWriter;
     }
 
     public void process(String src, String target) {
@@ -28,26 +27,9 @@ public class JSONOutputCsvProcessor extends CsvProcessor {
         protected void formatOutput() {
             CollectionUtils.emptyIfNull(getCsvRecords())
                     .parallelStream()
-                    .forEach(csvRecord -> {
-                        JsonFactory jsonFactory = new JsonFactory();
-                        StringWriter writer = new StringWriter();
-
-                        try (JsonGenerator generator = jsonFactory.createGenerator(writer)) {
-                            generator.useDefaultPrettyPrinter();
-                            generator.writeStartObject();
-
-                            for (int i = 0; i < csvRecord.getRecordFields().size(); i++) {
-                                generator.writeFieldName(csvRecord.getRecordFields().get(i).getFieldName().trim());
-                                generator.writeString(csvRecord.getRecordFields().get(i).getValue().trim());
-                            }
-
-                            generator.writeEndObject();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        csvRecord.setFormattedOutput(writer.toString());
-                    });
+                    .forEach(csvRecord ->
+                            csvRecord.setFormattedOutput(jsonWriter.write(csvRecord.getFieldValuesAsMap()))
+                    );
         }
 
         @Override
