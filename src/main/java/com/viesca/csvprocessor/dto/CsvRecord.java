@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class CsvRecord {
                 .collect(Collectors.toList());
     }
 
+    @XmlTransient
     public String getSourceFile() {
         return sourceFile;
     }
@@ -44,6 +46,7 @@ public class CsvRecord {
         this.sourceFile = sourceFile;
     }
 
+    @XmlTransient
     public int getIndex() {
         return index;
     }
@@ -62,6 +65,7 @@ public class CsvRecord {
         this.recordFields = recordFields;
     }
 
+    @XmlTransient
     public String getFormattedOutput() {
         return formattedOutput;
     }
@@ -70,6 +74,7 @@ public class CsvRecord {
         this.formattedOutput = formattedOutput;
     }
 
+    @XmlTransient
     public Map<String, String> getFieldValuesAsMap() {
         return recordFields
                 .stream()
