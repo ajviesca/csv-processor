@@ -27,9 +27,7 @@ public class JSONOutputCsvProcessor extends CsvProcessor {
         protected void formatOutput() {
             CollectionUtils.emptyIfNull(getCsvRecords())
                     .parallelStream()
-                    .forEach(csvRecord ->
-                            csvRecord.setFormattedOutput(jsonWriter.write(csvRecord.getFieldValuesAsMap()))
-                    );
+                    .forEach(csvRecord -> csvRecord.setFormattedOutput(jsonWriter.write(csvRecord.getCsvFields())));
         }
 
         @Override

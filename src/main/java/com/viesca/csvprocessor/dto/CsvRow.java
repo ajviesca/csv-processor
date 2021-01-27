@@ -1,6 +1,5 @@
 package com.viesca.csvprocessor.dto;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -11,7 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @XmlRootElement
 public class CsvRow {
@@ -25,17 +23,11 @@ public class CsvRow {
         // needed by xml mapper
     }
 
-    public CsvRow(String sourceFile, int index, List<String> headers, List<String> values) {
+    public CsvRow(String sourceFile, int index, List<CsvField> csvFields) {
         this.sourceFile = sourceFile;
         this.index = index;
+        this.csvFields = csvFields;
 
-        if (CollectionUtils.size(headers) != CollectionUtils.size(values)) {
-            throw new IllegalArgumentException("mismatch header and values length");
-        }
-
-        csvFields = IntStream.range(0, headers.size())
-                .mapToObj(i -> new CsvField(headers.get(i), values.get(i)))
-                .collect(Collectors.toList());
     }
 
     @XmlTransient
@@ -58,11 +50,11 @@ public class CsvRow {
 
     @XmlElementWrapper(name = "fields")
     @XmlElement(name = "field")
-    public List<CsvField> getRecordFields() {
+    public List<CsvField> getCsvFields() {
         return csvFields;
     }
 
-    public void setRecordFields(List<CsvField> csvFields) {
+    public void setCsvFields(List<CsvField> csvFields) {
         this.csvFields = csvFields;
     }
 

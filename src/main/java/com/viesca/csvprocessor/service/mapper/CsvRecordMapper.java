@@ -14,6 +14,8 @@ import java.util.stream.IntStream;
 
 public class CsvRecordMapper {
 
+    private final CsvFieldMapper csvFieldMapper = new CsvFieldMapper();
+
     public List<CsvRow> generateCsvRecords(List<Path> csvFiles) {
         return CollectionUtils.emptyIfNull(csvFiles)
                 .stream()
@@ -28,8 +30,16 @@ public class CsvRecordMapper {
             List<List<String>> rows = Files.readAllLines(csvFile).stream()
                     .map(line -> Arrays.asList(line.split(",")))
                     .collect(Collectors.toList());
+            List<String> headerRows = rows.get(0);
             return IntStream.range(1, rows.size())
-                    .mapToObj(index -> new CsvRow(csvFile.getFileName().toString(), index, rows.get(0), rows.get(index)))
+                    .mapToObj(index -> {
+                        List<String> dataRows = rows.get(index);
+                        return new CsvRow(
+                                csvFile.getFileName().toString(),
+                                index,
+                                csvFieldMapper.generateCsvFields(headerRows, dataRows)
+                        );
+                    })
                     .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
