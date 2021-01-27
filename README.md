@@ -1,16 +1,16 @@
 # csv-processor
-##sample usage
-###genrate both json and xml
+# sample usage
+### genrate both json and xml
 ```
 java -jar build/libs/csv-processor-3.0.jar -srcDir=src/test/resources -targetDir=build/output
 ```
 
-###genrate json
+### genrate json
 ```
 java -jar build/libs/csv-processor-3.0.jar -srcDir=src/test/resources -targetDir=build/output -mode=json
 ```
 
-###genrate xml
+### genrate xml
 ```
 java -jar build/libs/csv-processor-3.0.jar -srcDir=src/test/resources -targetDir=build/output -mode=xml
 ```
