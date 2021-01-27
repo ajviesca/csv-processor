@@ -1,38 +1,63 @@
 package com.viesca.csvprocessor.dto;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+@XmlRootElement
 public class CsvRecord {
 
-    private final String sourceFile;
-    private final int index;
-    private final List<String> headers;
-    private final List<String> values;
+    private String sourceFile;
+    private int index;
+    private List<RecordField> recordFields;
     private String formattedOutput;
+
+    public CsvRecord() {
+    }
 
     public CsvRecord(String sourceFile, int index, List<String> headers, List<String> values) {
         this.sourceFile = sourceFile;
         this.index = index;
-        this.headers = headers;
-        this.values = values;
+
+        if (CollectionUtils.size(headers) != CollectionUtils.size(values)) {
+            throw new IllegalArgumentException("mismatch header and values length");
+        }
+
+        recordFields = IntStream.range(0, headers.size())
+                .mapToObj(i -> new RecordField(headers.get(i), values.get(i)))
+                .collect(Collectors.toList());
     }
 
     public String getSourceFile() {
         return sourceFile;
     }
 
+    public void setSourceFile(String sourceFile) {
+        this.sourceFile = sourceFile;
+    }
+
     public int getIndex() {
         return index;
     }
 
-    public List<String> getHeaders() {
-        return headers;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
-    public List<String> getValues() {
-        return values;
+    @XmlElementWrapper(name = "fields")
+    @XmlElement(name = "field")
+    public List<RecordField> getRecordFields() {
+        return recordFields;
+    }
+
+    public void setRecordFields(List<RecordField> recordFields) {
+        this.recordFields = recordFields;
     }
 
     public String getFormattedOutput() {
@@ -48,8 +73,8 @@ public class CsvRecord {
         return new ToStringBuilder(this)
                 .append("sourceFile", sourceFile)
                 .append("index", index)
-                .append("headers", headers)
-                .append("values", values)
+                .append("recordFields", recordFields)
+                .append("formattedOutput", formattedOutput)
                 .toString();
     }
 }

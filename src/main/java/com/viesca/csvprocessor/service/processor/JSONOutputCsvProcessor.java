@@ -36,9 +36,9 @@ public class JSONOutputCsvProcessor extends CsvProcessor {
                             generator.useDefaultPrettyPrinter();
                             generator.writeStartObject();
 
-                            for (int i = 0; i < csvRecord.getHeaders().size(); i++) {
-                                generator.writeFieldName(csvRecord.getHeaders().get(i).trim());
-                                generator.writeString(csvRecord.getValues().get(i).trim());
+                            for (int i = 0; i < csvRecord.getRecordFields().size(); i++) {
+                                generator.writeFieldName(csvRecord.getRecordFields().get(i).getFieldName().trim());
+                                generator.writeString(csvRecord.getRecordFields().get(i).getValue().trim());
                             }
 
                             generator.writeEndObject();
