@@ -54,8 +54,10 @@ public abstract class CsvProcessor {
                         try {
                             Files.write(Paths.get(getTargetDir(),
                                     String.format(
-                                            "%s-%d.%s", csvRecord.getSourceFile(),
-                                            csvRecord.getIndex(), getFileType()
+                                            "%s-%d.%s",
+                                            csvRecord.getSourceFile(),
+                                            csvRecord.getIndex(),
+                                            getFileType()
                                     )),
                                     csvRecord.getFormattedOutput().getBytes());
                         } catch (IOException e) {

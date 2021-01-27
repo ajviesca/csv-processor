@@ -81,7 +81,7 @@ public class CsvRecord {
                 .collect(Collectors.toMap(RecordField::getFieldName,
                         RecordField::getValue,
                         (k, v) -> {
-                            throw new RuntimeException(String.format("Duplicate key %s", k));
+                            throw new IllegalArgumentException(String.format("Duplicate key %s", k));
                         },
                         LinkedHashMap::new));
     }
