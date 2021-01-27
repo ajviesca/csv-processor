@@ -17,7 +17,7 @@ public class CsvRecordMapper {
 
     private final CsvFieldMapper csvFieldMapper = new CsvFieldMapper();
 
-    public List<CsvRow> generateCsvRecords(List<Path> csvFiles) {
+    public List<CsvRow> generateCsvRows(List<Path> csvFiles) {
         return CollectionUtils.emptyIfNull(csvFiles)
                 .stream()
                 .map(this::processCsvFile)

@@ -23,7 +23,7 @@ class CsvRowMapperSpec extends Specification {
         given: "csv files"
         def csvFiles = csvReader.getFiles("src/test/resources")
         when: "process is invoked"
-        def csvRecords = sut.generateCsvRecords(csvFiles);
+        def csvRecords = sut.generateCsvRows(csvFiles);
         then: 'csv records are created'
         CollectionUtils.isNotEmpty(csvRecords)
         System.out.println(csvRecords)

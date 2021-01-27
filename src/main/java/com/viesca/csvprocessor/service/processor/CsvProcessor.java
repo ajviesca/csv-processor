@@ -67,7 +67,7 @@ public abstract class CsvProcessor {
         }
 
         private void mapToCsvRecord() {
-            csvRows = csvRecordMapper.generateCsvRecords(sourceFiles);
+            csvRows = csvRecordMapper.generateCsvRows(sourceFiles);
         }
 
         private void readFiles() {
