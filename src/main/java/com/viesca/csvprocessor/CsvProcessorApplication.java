@@ -9,11 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class CsvProcessorApplication {
 
-    private static final CsvReader CSV_READER = new CsvReader();
-    private static final CsvRecordMapper CSV_RECORD_MAPPER = new CsvRecordMapper();
-    private static final JSONWriter JSON_WRITER = new JSONWriter();
-    private static final XMLOutputCsvProcessor xmlOutputCsvProcessor = new XMLOutputCsvProcessor(CSV_READER, CSV_RECORD_MAPPER);
-    private static final JSONOutputCsvProcessor jsonOutputCsvProcessor = new JSONOutputCsvProcessor(CSV_READER, CSV_RECORD_MAPPER, JSON_WRITER);
+    private static final XMLOutputCsvProcessor xmlOutputCsvProcessor = new XMLOutputCsvProcessor(new CsvReader(), new CsvRecordMapper());
+    private static final JSONOutputCsvProcessor jsonOutputCsvProcessor = new JSONOutputCsvProcessor(new CsvReader(), new CsvRecordMapper(), new JSONWriter());
 
     public static void main(String... args) {
         String mode = null;
