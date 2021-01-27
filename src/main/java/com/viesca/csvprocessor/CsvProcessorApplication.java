@@ -12,6 +12,8 @@ public class CsvProcessorApplication {
     private static final CsvReader CSV_READER = new CsvReader();
     private static final CsvRecordMapper CSV_RECORD_MAPPER = new CsvRecordMapper();
     private static final JSONWriter JSON_WRITER = new JSONWriter();
+    private static final XMLOutputCsvProcessor xmlOutputCsvProcessor = new XMLOutputCsvProcessor(CSV_READER, CSV_RECORD_MAPPER);
+    private static final JSONOutputCsvProcessor jsonOutputCsvProcessor = new JSONOutputCsvProcessor(CSV_READER, CSV_RECORD_MAPPER, JSON_WRITER);
 
     public static void main(String... args) {
         String mode = null;
@@ -30,7 +32,7 @@ public class CsvProcessorApplication {
             }
         }
 
-        if (StringUtils.isBlank(mode) || StringUtils.isBlank(srcDir)) {
+        if (StringUtils.isBlank(srcDir)) {
             throw new IllegalArgumentException("mode and source directory required");
         }
         if (StringUtils.isBlank(targetDir)) {
@@ -39,12 +41,16 @@ public class CsvProcessorApplication {
 
         if ("json".equalsIgnoreCase(mode)) {
             System.out.println("JSON processing");
-            new JSONOutputCsvProcessor(CSV_READER, CSV_RECORD_MAPPER, JSON_WRITER).process(srcDir, targetDir);
+            jsonOutputCsvProcessor.process(srcDir, targetDir);
         } else if ("xml".equalsIgnoreCase(mode)) {
             System.out.println("XML processing");
-            new XMLOutputCsvProcessor(CSV_READER, CSV_RECORD_MAPPER).process(srcDir, targetDir);
+            xmlOutputCsvProcessor.process(srcDir, targetDir);
         } else {
-            System.out.println("unsupported mode " + mode);
+            System.out.println("no mode specified, generating all supported file types");
+            System.out.println("JSON processing");
+            jsonOutputCsvProcessor.process(srcDir, targetDir);
+            System.out.println("XML processing");
+            xmlOutputCsvProcessor.process(srcDir, targetDir);
         }
     }
 }

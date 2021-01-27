@@ -2,6 +2,7 @@ package com.viesca.csvprocessor.service.mapper;
 
 import com.viesca.csvprocessor.dto.CsvRow;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,7 +29,9 @@ public class CsvRecordMapper {
     private List<CsvRow> processCsvFile(Path csvFile) {
         try {
             List<List<String>> rows = Files.readAllLines(csvFile).stream()
-                    .map(line -> Arrays.asList(line.split(",")))
+                    .map(line -> Arrays.asList(
+                            Arrays.stream(line.split(",")).map(StringUtils::trim).toArray(String[]::new)
+                    ))
                     .collect(Collectors.toList());
             List<String> headerRows = rows.get(0);
             return IntStream.range(1, rows.size())
